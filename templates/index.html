@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Anomaly Detection Server</title>
+
+</head>
+<body>
+
+    <!-- The model select css -->
+    <link rel="stylesheet" href="/static/css_files/model_select.css"/>
+
+    <div class="custom-select-wrapper">
+        <div class="custom-select">
+            <div class="custom-select__trigger"><span id = "model_select_val" data-value="-1">Please Choose Model To Use</span>
+                <div class="arrow"></div>
+            </div>
+            <div id = "model_select" class="custom-options">
+            </div>
+        </div>
+    </div>
+
+    <!--The model select js-->
+    <script src="/static/js_files/model_select.js"></script>
+
+    <!-- The drop off css -->
+    <link rel="stylesheet" href="/static/css_files/drop_off.css"/>
+
+    <p id="demo">Click me to change my HTML content (innerHTML).</p>
+
+    <div id="drop-area-learnFile">
+        <form class="my-form">
+            <p style="text-align:center;">Upload a .csv file with valid data to learn from</p>
+            <input type="file" id="fileElem-learnFile" accept=".csv" onchange="dragAreaLearnFile.handleFiles(this.files)">
+            <div style="margin-left:auto;margin-right:auto;text-align:center">
+                <label class="button" for="fileElem-learnFile">Select a .csv file</label>
+            </div>
+            <p id="statusStr-learnFile" style="text-align:center;"></p>
+        </form>
+    </div>
+
+    <div id="drop-area-resultFile">
+        <form class="my-form">
+            <p style="text-align:center;">Upload a .csv file with results to analyze</p>
+            <input type="file" id="fileElem-resultFile" accept=".csv" onchange="dragAreaResultFile.handleFiles(this.files)">
+            <div style="margin-left:auto;margin-right:auto;text-align:center">
+                <label class="button" for="fileElem-resultFile">Select a .csv file</label>
+            </div>
+            <p id="statusStr-resultFile" style="text-align:center;"></p>
+        </form>
+    </div>
+
+    <!--The drop off js-->
+    <script src="/static/js_files/drop_off.js"></script>
+
+</body>
+</html>

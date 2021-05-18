@@ -1,0 +1,47 @@
+#drop-area-learnFile {
+  border: 2px dashed #ccc;
+  border-radius: 20px;
+  width: 300px;
+  margin: 50px auto;
+  padding: 20px;
+}
+#drop-area-learnFile.highlight {
+  border-color: red;
+}
+
+#drop-area-resultFile {
+  border: 2px dashed #ccc;
+  border-radius: 20px;
+  width: 300px;
+  margin: 50px auto;
+  padding: 20px;
+}
+
+#drop-area-resultFile.highlight {
+  border-color: blue;
+}
+
+.my-form {
+  margin-bottom: 10px;
+}
+
+.button {
+  display: inline-block;
+  padding: 10px;
+  background: #ccc;
+  cursor: pointer;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.button:hover {
+  background: #ddd;
+}
+
+#fileElem-learnFile {
+  display: none;
+}
+
+#fileElem-resultFile {
+  display: none;
+}
