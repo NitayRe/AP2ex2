@@ -1,10 +1,10 @@
 from flask import Flask, render_template, request, jsonify
 from werkzeug.wrappers import Request
-import manager
+import backend.manager
 
 app = Flask(__name__)
 
-manager = manager.ModelsManager()
+manager = backend.manager.ModelsManager()
 
 @app.route('/')
 def start():
