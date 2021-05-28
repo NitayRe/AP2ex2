@@ -107,6 +107,7 @@ class ModelsManager:
 
         # init all lists of the report
         for feature in data:
+            
             report[feature] = []
             feature_anomalies = anomalies[feature]
 
