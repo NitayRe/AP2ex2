@@ -2,7 +2,7 @@ from sys import path
 from typing import Dict, List
 import ZODB
 import transaction
-import BTrees._OOBTree
+import BTrees._IOBTree
 import pathlib
 
 # const
@@ -25,10 +25,10 @@ class DBManager:
         self._root = self._connection.root()
 
         if CONTAINER_NAME not in self._root:
-            self._root[CONTAINER_NAME] = BTrees.OOBTree.BTree()
+            self._root[CONTAINER_NAME] = BTrees.IOBTree.IOBTree()
 
-    
-
+        self._models = self._root[CONTAINER_NAME]    
+        
     def add_model(self, id_key: int, data: tuple) -> None:
         """
         saves the data of a new anomaly detector model in the db.
@@ -38,8 +38,9 @@ class DBManager:
             data (tuple): tuple, contating the anomaly detector, and its info ('model')
 
         """
-        self._root[CONTAINER_NAME][str(id_key)] = data      # adding to the db.
-        transaction.commit()                                # commiting the change.
+        #id_key = str(id_key)
+        self._models[id_key] = data           # adding to the db.
+        transaction.commit()                  # commiting the change.
 
 
     def delete_model(self, id_key: int) -> None:
@@ -48,7 +49,7 @@ class DBManager:
         Args:
             id_key (int): the key of the model to delete.
         """
-        del self._root[CONTAINER_NAME][str(id_key)]
+        del self._models[id_key]
         transaction.commit()
 
     def get_model(self, id_key: int) -> tuple:
@@ -61,7 +62,7 @@ class DBManager:
         Returns:
             tuple: a tuple - of anomaly detector object, and a model (its info json).
         """
-        return self._root[CONTAINER_NAME][str(id_key)]
+        return self._models[id_key]
 
 
     def get_models_info(self) -> List[Dict]:
@@ -72,7 +73,7 @@ class DBManager:
             List: containing all the models - the json info of the saved anomaly detectors.
         """
         res = list()
-        for (ad_obj, model) in self._root[CONTAINER_NAME].values():
+        for (ad_obj, model) in self._models.values():
             res.append(model)
 
         return res
