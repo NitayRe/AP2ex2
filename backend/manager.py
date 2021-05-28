@@ -117,6 +117,7 @@ class ModelsManager:
 
         # transform list of indexes to list of spans
         for feature in data:
+            
             report[feature] = []
             feature_anomalies = anomalies[feature]
 
