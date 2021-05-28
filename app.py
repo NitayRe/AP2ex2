@@ -1,5 +1,7 @@
 from flask import Flask, render_template, request, jsonify
 from werkzeug.wrappers import Request
+import atexit
+
 import backend.manager
 
 manager = None
@@ -44,6 +46,12 @@ def anomalies():
     data = request.get_json()["predict_data"]
     return manager.detect_anomalies(id, data)
 
+
+def release_resources():
+    if manager != None:
+        manager.close()
+
+atexit.register(release_resources)
 
 if __name__ == '__main__':
     app.run(debug=True)

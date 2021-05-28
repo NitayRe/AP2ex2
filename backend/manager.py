@@ -103,3 +103,8 @@ class ModelsManager:
             
         return dict(anomalies=report, reason='no implemented')
     
+    def close(self):
+        """ release resources
+        """
+        self._db.close()
+        
