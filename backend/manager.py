@@ -2,10 +2,11 @@ from logging import Manager
 from anomaly_detection.regression_detector import RegressionAnomalyDetector
 from anomaly_detection.hybrid_detector import HybridAnomalyDetector
 from . import db_manager
+import datetime
 
 # maps algorithm name to its detector class
 ALGORITHMS = {"regression": RegressionAnomalyDetector, "hybrid": HybridAnomalyDetector}
-DB_PATH = "db\modeldb.fs"
+DB_PATH = "db/modeldb.fs"
 
 class ModelsManager:
     """a class for handling all saved models"""
@@ -16,6 +17,10 @@ class ModelsManager:
         self._current_max_id = 0
         self._db = db_manager.DBManager(DB_PATH)
 
+    def _current_time(self):
+        """get current time in the format of YYYY-MM-DDTHH:mm:ssZ"""
+        now = datetime.datetime.now()
+        return now.strftime('%Y-%m-%dT%X%z')
 
     def add_model(self, algorithm, data):
         """train a model and add it to the list of existing models
@@ -36,7 +41,7 @@ class ModelsManager:
 
         self._current_max_id += 1
         self._detectors[self._current_max_id] = detector
-        model = dict(model_id=self._current_max_id, upload_time='YYYY-MM-DDTHH:mm:ssZ', status='ready')
+        model = dict(model_id=self._current_max_id, upload_time=self._current_time(), status='ready')
         self._models[self._current_max_id] = model
 
         # save model to database
@@ -76,9 +81,25 @@ class ModelsManager:
 
         # init all lists of the report
         for feature in data:
-            
             report[feature] = []
+            feature_anomalies = anomalies[feature]
 
+            if len(feature_anomalies) == 0:
+                continue
 
-        return anomalies
+            i = 0
+            span_start = feature_anomalies[i]
+            span_end = span_start
+            while i < len(feature_anomalies) - 1:
+                i += 1
+                if feature_anomalies[i] == span_end + 1:
+                    span_end += 1
+                else:
+                    report[feature].append([span_start, span_end])
+                    span_start = feature_anomalies[i]
+                    span_end = span_start
+
+            report[feature].append([span_start, span_end])
+            
+        return dict(anomalies=report, reason='no implemented')
     

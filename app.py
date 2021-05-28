@@ -38,6 +38,12 @@ def delete_model():
     manager.delete_model(int(id))
     return ''
 
+@app.route('/api/anomaly', methods = ['POST'])
+def anomalies():
+    id = int(request.args.get("model_id", ''))
+    data = request.get_json()["predict_data"]
+    return manager.detect_anomalies(id, data)
+
 
 if __name__ == '__main__':
     app.run(debug=True)

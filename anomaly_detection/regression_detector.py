@@ -65,7 +65,7 @@ class RegressionAnomalyDetector:
     def detect(self, timeseries):
         res = {}
         for feature in self._column_by_name:
-            res[feature] += []
+            res[feature] = []
 
 
         for cor in self._correlated_features:
