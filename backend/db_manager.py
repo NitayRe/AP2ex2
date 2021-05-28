@@ -17,7 +17,7 @@ class DBManager:
             db_path (str): the path to the db.
         """
         
-        db_directory = pathlib.Path(db_path)
+        db_directory = pathlib.Path(db_path).parent
         db_directory.mkdir(parents=True, exist_ok=True) # creating the db directory if needed.
 
         self._db = ZODB.DB(db_path)
@@ -72,7 +72,7 @@ class DBManager:
             List: containing all the models - the json info of the saved anomaly detectors.
         """
         res = list()
-        for (ad_obj, model) in self._root[CONTAINER_NAME]:
+        for (ad_obj, model) in self._root[CONTAINER_NAME].values():
             res.append(model)
 
         return res

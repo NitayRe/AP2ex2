@@ -2,9 +2,15 @@ from flask import Flask, render_template, request, jsonify
 from werkzeug.wrappers import Request
 import backend.manager
 
+manager = None
+
 app = Flask(__name__)
 
-manager = backend.manager.ModelsManager()
+
+@app.before_first_request
+def init_manager():
+    global manager
+    manager = backend.manager.ModelsManager()
 
 @app.route('/')
 def start():
@@ -29,7 +35,7 @@ def get_all_models():
 @app.route('/api/model', methods = ['DELETE'])
 def delete_model():
     id = request.args.get("model_id", '')
-    manager.detete_model(int(id))
+    manager.delete_model(int(id))
     return ''
 
 
