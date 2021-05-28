@@ -3,24 +3,41 @@ from anomaly_detection.regression_detector import RegressionAnomalyDetector
 from anomaly_detection.hybrid_detector import HybridAnomalyDetector
 from . import db_manager
 import datetime
+import random
 
 # maps algorithm name to its detector class
 ALGORITHMS = {"regression": RegressionAnomalyDetector, "hybrid": HybridAnomalyDetector}
 DB_PATH = "db/modeldb.fs"
+MAX_ITEMS = 10**8
 
 class ModelsManager:
     """a class for handling all saved models"""
 
     def __init__(self):
-        self._models = {} # maps id is to its model
-        self._detectors = {} # maps id is to its detector
-        self._current_max_id = 0
+        self._models = dict() # maps id is to its model
+        self._detectors = dict() # maps id is to its detector
+        
         self._db = db_manager.DBManager(DB_PATH)
+
+        # init id_set
+        models = self._db.get_models_info()
+        self._id_set = set()
+        for model in models:
+            self._models[model['model_id']] = model
+            self._id_set.add(model['model_id'])
+        
 
     def _current_time(self):
         """get current time in the format of YYYY-MM-DDTHH:mm:ssZ"""
         now = datetime.datetime.now()
         return now.strftime('%Y-%m-%dT%X%z')
+
+    def _choose_id(self):
+        while True:
+            try_id = random.randint(0, MAX_ITEMS)
+            if try_id not in self._id_set:
+                self._id_set.add(try_id)
+                return try_id
 
     def add_model(self, algorithm, data):
         """train a model and add it to the list of existing models
@@ -39,15 +56,15 @@ class ModelsManager:
         detector = ALGORITHMS[algorithm](data)
         detector.learn_normal()
 
-        self._current_max_id += 1
-        self._detectors[self._current_max_id] = detector
-        model = dict(model_id=self._current_max_id, upload_time=self._current_time(), status='ready')
-        self._models[self._current_max_id] = model
+        model_id = self._choose_id()
+        self._detectors[model_id] = detector
+        model = dict(model_id=model_id, upload_time=self._current_time(), status='ready')
+        self._models[model_id] = model
 
         # save model to database
-        self._db.add_model(self._current_max_id, (detector, model))
+        self._db.add_model(model_id, (detector, model))
         
-        return self._models[self._current_max_id]
+        return self._models[model_id]
 
     def get_model(self, id):
         """return a model by its id"""
@@ -58,15 +75,16 @@ class ModelsManager:
         Returns:
             list of Models: list of all models
         """
-        return self._db.get_models_info()
-        #return list(self._models.values())
+        return list(self._models.values())
 
     def delete_model(self, id):
         """delete a model by its id"""
-        self._models.pop(id)
-        self._detectors.pop(id)
+        self._models.pop(id, None)
+        self._detectors.pop(id, None)
+        self._db.delete_model(id)
 
-    def detect_anomalies(self, id, data):
+
+    def detect_anomalies(self, model_id, data):
         """detect anomalies wuth a certain model
 
         Args:
@@ -76,7 +94,13 @@ class ModelsManager:
         Returns:
             report with all anomalies
         """
-        anomalies = self._detectors[id].detect(data)
+        if model_id in self._detectors:
+            det = self._detectors[model_id]
+        else:
+            det, _ = self._db.get_model(model_id)
+            self._detectors[model_id] = det
+            
+        anomalies = det.detect(data)
         report = {}
 
         # init all lists of the report
