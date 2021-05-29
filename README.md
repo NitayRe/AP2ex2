@@ -38,11 +38,15 @@ that is the `app.py` file - it connects the HTTP requests to the model in the ba
 
 ## Download and Set-Up Instruction:
 the following tools are required, make sure you first install them:
-- python 3
+- python - 3.5 and above
 - flask framework
 - ZODB - python library
 
-(and all of those dependencies)
+the recommended way is to install python and pip. and then install the packages via pip:
+```sh
+pip install flask
+pip install ZODB
+```
 
 
 
