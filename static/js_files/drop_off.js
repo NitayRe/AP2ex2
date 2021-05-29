@@ -2,7 +2,7 @@ class DragArea{
      constructor(dropArea, statusStr, handler) {
          this.__dropArea = document.getElementById(dropArea);
          this.__statusStr = document.getElementById(statusStr);
-         this.__handler = handler;
+         this.__notifyFunc = [];
 
          // Prevent default drag behaviors
         ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
@@ -20,6 +20,16 @@ class DragArea{
 
         // Handle dropped files
          this.__dropArea.addEventListener('drop', this.__handleDrop.bind(this), false);
+     }
+
+     addObserverFunc(func) {
+         this.__notifyFunc.push(func);
+     }
+
+     __notifyAll(dataJson) {
+         this.__notifyFunc.forEach(function (func){
+             func(dataJson);
+         });
      }
 
     __preventDefaults (e) {
@@ -66,10 +76,9 @@ class DragArea{
                 this.__statusStr.innerHTML = "Error: the data (lines 2+) in the .csv file should not contain strings ❌";
                 return;
             }
-
-            this.__handler(data);
             this.__statusStr.style.color = "green";
             this.__statusStr.innerHTML = "file was loaded successfully ✔";
+            this.__notifyAll(data);
         }.bind(this);
 
         reader.onerror = function() {
@@ -104,16 +113,10 @@ class DragArea{
              }
          }
 
-         return JSON.stringify(obj);
+         return obj;
     }
 }
 
-let dragAreaLearnFile = new DragArea("drop-area-learnFile", "statusStr-learnFile",
-    function (dataJson) {
-        document.getElementById("demo").innerHTML = dataJson;
-    });
+let dragAreaLearnFile = new DragArea("drop-area-learnFile", "statusStr-learnFile");
 
-let dragAreaResultFile = new DragArea("drop-area-resultFile", "statusStr-resultFile",
-    function (dataJson) {
-        document.getElementById("demo").innerHTML = dataJson;
-    });
+let dragAreaResultFile = new DragArea("drop-area-resultFile", "statusStr-resultFile");

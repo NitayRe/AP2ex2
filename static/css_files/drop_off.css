@@ -1,20 +1,22 @@
 #drop-area-learnFile {
-  border: 2px dashed #ccc;
+  border: 2px dashed #9e9e9e;
   border-radius: 20px;
-  width: 300px;
-  margin: 50px auto;
-  padding: 20px;
+  width: 48%;
+  margin: 5px 5px;
+  padding: 5px;
 }
 #drop-area-learnFile.highlight {
   border-color: red;
 }
 
 #drop-area-resultFile {
-  border: 2px dashed #ccc;
+  border: 2px dashed #9e9e9e;
   border-radius: 20px;
-  width: 300px;
-  margin: 50px auto;
-  padding: 20px;
+  width: 48%;
+  position: absolute;
+  right: 0px;
+  margin: 5px 5px;
+  padding: 5px;
 }
 
 #drop-area-resultFile.highlight {

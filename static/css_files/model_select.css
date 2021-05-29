@@ -12,10 +12,11 @@
 .custom-select-wrapper {
   position: relative;
   user-select: none;
-  width: 400px;
+  width: 100%;
 }
 
 .custom-select {
+  margin: 5px 5px;
   display: flex;
   flex-direction: column;
   border-width: 0 2px 0 2px;
@@ -42,6 +43,8 @@
 }
 
 .custom-options {
+  height: 300px;
+  overflow: auto;
   position: absolute;
   display: block;
   top: 100%;
