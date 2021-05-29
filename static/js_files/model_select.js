@@ -91,12 +91,3 @@ class ModelSelect{
 }
 
 let modelSelect = new ModelSelect("model-select");
-
-
-//////////////////////////////////////////////
-modelSelect.addNewModel(JSON.parse('{"model_id":0, "upload_time":"2021-04-22T19:15:32+02.00", "status":"ready"}'));
-modelSelect.addNewModel(JSON.parse('{"model_id":1, "upload_time":"2021-04-22T19:15:32+02.00", "status":"ready"}'));
-modelSelect.addNewModel(JSON.parse('{"model_id":2, "upload_time":"2021-04-22T19:15:32+02.00", "status":"ready"}'));
-modelSelect.addNewModel(JSON.parse('{"model_id":3, "upload_time":"2022-04-22T20:15:32+02.00", "status":"pending"}'));
-modelSelect.addNewModel(JSON.parse('{"model_id":4, "upload_time":"2023-04-22T19:15:32+03.00", "status":"pending"}'));
-modelSelect.addNewModel(JSON.parse('{"model_id":5, "upload_time":"2024-04-22T19:15:32+06.00", "status":"pending"}'));

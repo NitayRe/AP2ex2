@@ -64,10 +64,10 @@ class Manager{
                 return;
             }
 
-            this.__anomalyGraph.setAnomaly(response);
+            this.__anomalyGraph.setAnomaly(response.anomalies);
             this.__anomalyGraph.displayGraph(this.__anomalyCheckbox.getSelectedOptions());
 
-            this.__anomalyTable.setNewTable(response);
+            this.__anomalyTable.setNewTable(response.anomalies, response.reason);
         }.bind(this));
 
         this.__clientController.addObserverFunc(function (event, response) {
@@ -130,6 +130,10 @@ class Manager{
         }
 
         this.__clientController.getAnomaly(idSelected, this.__resultData);
+    }
+
+    clickResetZoom(){
+        this.__anomalyGraph.resetZoom();
     }
 }
 

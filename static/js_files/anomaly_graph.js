@@ -15,9 +15,38 @@ class AnomalyGraph{
                     backgroundColor : this.__customColor.bind(this),
                     display: true
                   }
+                },
+              plugins: {
+                    zoom: {
+                        // Container for pan options
+                        pan: {
+                            // Boolean to enable panning
+                            enabled: true,
+
+                            mode: 'xy',
+
+                            // On category scale, factor of pan velocity
+                            speed: 20
+                        },
+
+                        // Container for zoom options
+                        zoom: {
+                            // Boolean to enable zooming
+                            enabled: true,
+
+                            // Enable drag-to-zoom behavior
+                            wheel: true,
+
+                            mode: 'xy',
+
+                            // Speed of zoom via mouse wheel
+                            // (percentage of zoom on a wheel event)
+                            speed: 0.1
+                        }
+                    }
                 }
-              }
-            });
+          }
+        });
     }
 
     displayGraph(varNames) {
@@ -82,8 +111,9 @@ class AnomalyGraph{
         }
         return color;
     }
+
+    resetZoom(){
+        this.__chart.resetZoom();
+    }
 }
 let anomalyGraph = new AnomalyGraph("anomaly-chart");
-// anomalyGraph.setData('{"a":[0,1,2,3,4,5],"b":[66,51,54,22,22,366],"c":[-7,-9,-52,54,92,-90]}');
-// anomalyGraph.setAnomaly('{"a":[[2,4]], "b":[[0,1], [4,5]], "c":[[0,0], [4,4]], "reason":"bad"}');
-// anomalyGraph.displayGraph(["a","b", "c"]);

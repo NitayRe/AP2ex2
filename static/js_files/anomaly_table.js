@@ -9,10 +9,10 @@ class AnomalyTable{
      * @param anomaly is a json of type:
      * { anomalies:{ col_name_1: [span_1], col_name_2: [span_1, span_2, ... ] ….},reason: Any} }
      */
-    setNewTable(anomaly){
+    setNewTable(anomaly,reason){
         this.__clearTable();
         this.__setHeaders(anomaly);
-        this.__setBody(anomaly);
+        this.__setBody(anomaly,reason);
     }
 
     __clearTable(){
@@ -28,34 +28,39 @@ class AnomalyTable{
 
             this.__htmlTable.querySelector('thead tr').appendChild(headStr);
         }.bind(this));
+
+        let rHeadStr = document.createElement("th");
+        rHeadStr.innerHTML = "reason";
+        this.__htmlTable.querySelector('thead tr').appendChild(rHeadStr);
     }
 
-    __setBody(anomaly){
+    __setBody(anomaly, reason){
         Object.keys(anomaly).forEach(function(key) {
             this.__setCol(anomaly, key);
         }.bind(this));
+
+        let rCol = document.createElement("td");
+        rCol.innerHTML = reason;
+        this.__htmlTable.querySelector('tbody tr').appendChild(rCol);
     }
 
     __setCol(anomaly, key){
         let col = document.createElement("td");
         let inCol = "";
 
-        if(key === "reason") {
-            inCol = anomaly[key];
-        } else {
-            anomaly[key].forEach(function (span) {
+        anomaly[key].forEach(function (span) {
 
-                if (inCol !== "") {
-                    inCol += "<br>";
-                }
+            if (inCol !== "") {
+                inCol += "<br>";
+            }
 
-                if (span[0] == span[1]) {
-                    inCol += span[0].toString();
-                } else {
-                    inCol += span[0].toString() + " - " + span[1].toString();
-                }
-            });
-        }
+            if (span[0] == span[1]) {
+                inCol += span[0].toString();
+            } else {
+                inCol += span[0].toString() + " - " + span[1].toString();
+            }
+        });
+
         col.innerHTML = inCol;
 
         this.__htmlTable.querySelector('tbody tr').appendChild(col);
@@ -63,4 +68,3 @@ class AnomalyTable{
 }
 
 let anomalyTable = new AnomalyTable("anomaly-table");
-//anomalyTable.setNewTable(JSON.parse('{"a":[[0,0], [2,5], [9,111111111111111111111111111111111111111116]], "b":[[5,6], [8,10], [20,86], [89,89], [140,150], [150,150]], "b1":[[5,6], [8,10], [20,86], [89,89], [140,150], [150,150]], "b2":[[5,6], [8,10], [20,86], [89,89], [140,150], [150,150]], "b3":[[5,6], [8,10], [20,86], [89,89], [140,150], [150,150]], "b4":[[5,6], [8,10], [20,86], [89,89], [140,150], [150,150]], "b5":[[5,6], [8,10], [20,86], [89,89], [140,150], [150,150]], "b64444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444":[[5,6], [8,10], [20,86], [89,89], [140,150], [150,150]], "c":[[0,0], [50,98], [112,116]], "reason":"bad"}'));

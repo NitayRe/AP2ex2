@@ -18,7 +18,7 @@ class ClientController{
         this.__sendMassage("POST",
             "/api/model",
             "model_type=" + modelType,
-            {trainData: trainData},
+            {train_data: trainData},
             EVENTS.TrainModel);
     }
 
@@ -49,7 +49,7 @@ class ClientController{
     getAnomaly(modelId, predictData){
         this.__sendMassage("POST",
             "/api/anomaly",
-            "model_id:" + modelId,
+            "model_id=" + modelId,
             {predict_data:  predictData},
             EVENTS.GetAnomaly);
     }
@@ -61,9 +61,11 @@ class ClientController{
         if(requestBody == null) {
             requestBody = {};
         }
-        $.ajax({
+
+        jQuery.ajax({
             url: path,
-            data: requestBody,
+            data: JSON.stringify(requestBody),
+            contentType: 'application/json;charset=UTF-8',
             type: type,
             success: function(response) {
                 this.__notifyAll(event, response);
