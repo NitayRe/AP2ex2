@@ -1,57 +1,134 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <title>Anomaly Detection Server</title>
+    <title>Anomaly Detector</title>
 
+    <link rel="shortcut icon" href="/static/icon.PNG"/>
+
+    <!-- The sections css -->
+    <link rel="stylesheet" href="/static/css_files/sections.css"/>
+    <!-- The buttons css -->
+    <link rel="stylesheet" href="/static/css_files/buttons.css"/>
+
+    <!-- The graph library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3"></script>
+    <script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@0.7.7"></script>
+
+    <!--The ajax library-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!--for the multi select style-->
+    <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Raleway'>
+    <link rel='stylesheet' href='https://fonts.googleapis.com/icon?family=Material+Icons'>
 </head>
-<body>
+<body style="background: rgba(29,95,147,0.71)">
+    <div class="sidebar">
+        <!--The checkbox css-->
+        <link rel="stylesheet" href="static/css_files/checkbox.css">
 
-    <!-- The model select css -->
-    <link rel="stylesheet" href="/static/css_files/model_select.css"/>
+        <div style="width: 100%; padding: 5px;" id="varsNames-wrapper">
+            <select multiple="multiple" id="varsNames">
+            </select>
+        </div>
 
-    <div class="custom-select-wrapper">
-        <div class="custom-select">
-            <div class="custom-select__trigger"><span id = "model_select_val" data-value="-1">Please Choose Model To Use</span>
-                <div class="arrow"></div>
+        <!--The checkbox js-->
+        <script  src="static/js_files/checkbox.js"></script>
+
+        <!-- The model select css -->
+        <link rel="stylesheet" href="/static/css_files/model_select.css"/>
+
+        <div class="custom-select-wrapper">
+            <div class="custom-select" id="model-select">
+                <div class="custom-select__trigger"><span data-value="-1" data-status="-1">Please Choose Model To Use</span>
+                    <div class="arrow"></div>
+                </div>
+                <div class="custom-options">
+                </div>
             </div>
-            <div id = "model_select" class="custom-options">
+        </div>
+        <div style="display: flex;justify-content: center;">
+            <button class="button5" style="background-color:rgba(0,109,255,0.72);" onclick="manager.clickDelete();">Delete</button>
+            <button class="button5" style="background-color:rgba(0,109,255,0.72);" onclick="manager.clickDisplay();">Display Graph</button>
+            <button class="button5" style="background-color:rgba(0,109,255,0.72);" onclick="manager.clickResetZoom();">Reset Graph Zoom</button>
+        </div>
+        <!--The model select js-->
+        <script src="/static/js_files/model_select.js"></script>
+    </div>
+    <div class="main">
+        <canvas id="anomaly-chart" style="width:100%;height:99%;"/>
+
+        <!--The graph js-->
+        <script src="/static/js_files/anomaly_graph.js"></script>
+    </div>
+    <div class="lower-main">
+         <!-- The table css -->
+        <link rel="stylesheet" href="/static/css_files/table.css"/>
+
+        <table class="styled-table" id="anomaly-table">
+            <thead>
+                <tr>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+
+                </tr>
+            </tbody>
+        </table>
+
+        <!--The table js-->
+        <script src="/static/js_files/anomaly_table.js"></script>
+    </div>
+    <div class="footer">
+        <div style="width: 100%;position: absolute;top: 50%;left: 50%;transform: translate(-50%, -50%);">
+            <div style="width: 100%;height: min-content;padding: 5px;justify-content: center;display: flex;">
+                <select id="alg-type" style="margin-left: 5px; margin-right: 5px;">
+                    <option>regression</option>
+                    <option>hybrid</option>
+                </select>
+
+                <button onclick="manager.clickTrainModel();">Train Model</button>
+            </div>
+            <div style="align-items: center;display: flex;width: 100%;">
+                <!-- The drop off css -->
+                <link rel="stylesheet" href="/static/css_files/drop_off.css"/>
+
+                <div id="drop-area-learnFile">
+                    <form class="my-form">
+                        <p style="text-align:center;">Upload a .csv file with valid data to learn from</p>
+                        <input type="file" id="fileElem-learnFile" accept=".csv" onchange="dragAreaLearnFile.handleFiles(this.files)">
+                        <div style="margin-left:auto;margin-right:auto;text-align:center">
+                            <label class="button" for="fileElem-learnFile">Select a .csv file</label>
+                        </div>
+                        <p id="statusStr-learnFile" style="text-align:center;"></p>
+                    </form>
+                </div>
+
+                <div id="drop-area-resultFile" style="position: relative;">
+                    <form class="my-form">
+                        <p style="text-align:center;">Upload a .csv file with results to analyze</p>
+                        <input type="file" id="fileElem-resultFile" accept=".csv" onchange="dragAreaResultFile.handleFiles(this.files)">
+                        <div style="margin-left:auto;margin-right:auto;text-align:center">
+                            <label class="button" for="fileElem-resultFile">Select a .csv file</label>
+                        </div>
+                        <p id="statusStr-resultFile" style="text-align:center;"></p>
+                    </form>
+                </div>
+
+                <!--The drop off js-->
+                <script src="/static/js_files/drop_off.js"></script>
             </div>
         </div>
     </div>
 
-    <!--The model select js-->
-    <script src="/static/js_files/model_select.js"></script>
+    <!--The client controller js-->
+    <script src="/static/js_files/client_controller.js"></script>
 
-    <!-- The drop off css -->
-    <link rel="stylesheet" href="/static/css_files/drop_off.css"/>
-
-    <p id="demo">Click me to change my HTML content (innerHTML).</p>
-
-    <div id="drop-area-learnFile">
-        <form class="my-form">
-            <p style="text-align:center;">Upload a .csv file with valid data to learn from</p>
-            <input type="file" id="fileElem-learnFile" accept=".csv" onchange="dragAreaLearnFile.handleFiles(this.files)">
-            <div style="margin-left:auto;margin-right:auto;text-align:center">
-                <label class="button" for="fileElem-learnFile">Select a .csv file</label>
-            </div>
-            <p id="statusStr-learnFile" style="text-align:center;"></p>
-        </form>
-    </div>
-
-    <div id="drop-area-resultFile">
-        <form class="my-form">
-            <p style="text-align:center;">Upload a .csv file with results to analyze</p>
-            <input type="file" id="fileElem-resultFile" accept=".csv" onchange="dragAreaResultFile.handleFiles(this.files)">
-            <div style="margin-left:auto;margin-right:auto;text-align:center">
-                <label class="button" for="fileElem-resultFile">Select a .csv file</label>
-            </div>
-            <p id="statusStr-resultFile" style="text-align:center;"></p>
-        </form>
-    </div>
-
-    <!--The drop off js-->
-    <script src="/static/js_files/drop_off.js"></script>
-
+    <!--The manager js-->
+    <script src="/static/js_files/manager.js"></script>
 </body>
 </html>
