@@ -1,9 +1,11 @@
-from logging import Manager
-from anomaly_detection.regression_detector import RegressionAnomalyDetector
-from anomaly_detection.hybrid_detector import HybridAnomalyDetector
-from . import db_manager
 import datetime
 import random
+from logging import Manager
+
+from anomaly_detection.hybrid_detector import HybridAnomalyDetector
+from anomaly_detection.regression_detector import RegressionAnomalyDetector
+
+from . import db_manager
 
 # maps algorithm name to its detector class
 ALGORITHMS = {"regression": RegressionAnomalyDetector, "hybrid": HybridAnomalyDetector}
@@ -66,9 +68,9 @@ class ModelsManager:
         
         return self._models[model_id]
 
-    def get_model(self, id):
+    def get_model(self, id_key):
         """return a model by its id"""
-        return self._models[id]
+        return self._models[id_key]
 
     def get_all_models(self):
         """
@@ -77,15 +79,15 @@ class ModelsManager:
         """
         return list(self._models.values())
 
-    def delete_model(self, id):
+    def delete_model(self, id_key):
         """delete a model by its id"""
-        self._models.pop(id, None)
-        self._detectors.pop(id, None)
-        self._db.delete_model(id)
+        self._models.pop(id_key, None)
+        self._detectors.pop(id_key, None)
+        self._db.delete_model(id_key)
 
 
     def detect_anomalies(self, model_id, data):
-        """detect anomalies wuth a certain model
+        """detect anomalies with a certain model
 
         Args:
             id (int): model_is of the model to detect with
