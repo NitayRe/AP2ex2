@@ -16,6 +16,7 @@ Our web-app design is:
 - get the info of all saved anomaly detectors.
 - detect anomalies by a saved detector.
 - delete a saved detector.
+
 [for more info of the RESTful api look here](RESTful-api.md)
 
 ### The Web-Application:
