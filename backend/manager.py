@@ -51,7 +51,7 @@ class ModelsManager:
         """
 
         if algorithm not in ALGORITHMS:
-            return None
+            raise Exception('algoritm does not exist')
 
         detector = ALGORITHMS[algorithm](data)
         detector.learn_normal()
@@ -68,6 +68,8 @@ class ModelsManager:
 
     def get_model(self, id):
         """return a model by its id"""
+        if id not in self._models:
+            raise Exception(f'model with the id {id} does not exist')
         return self._models[id]
 
     def get_all_models(self):
@@ -79,6 +81,9 @@ class ModelsManager:
 
     def delete_model(self, id):
         """delete a model by its id"""
+        if id not in self._models:
+            raise Exception(f'model with the id {id} does not exist')
+
         self._models.pop(id, None)
         self._detectors.pop(id, None)
         self._db.delete_model(id)
@@ -94,6 +99,12 @@ class ModelsManager:
         Returns:
             report with all anomalies
         """
+        if model_id not in self._models:
+            raise Exception(f'model with the id {model_id} does not exist')
+
+        if self._models[model_id]['status'] == 'pending':
+            return None
+            
         if model_id in self._detectors:
             det = self._detectors[model_id]
         else:

@@ -71,7 +71,10 @@ class HybridAnomalyDetector:
             self._correlated_features.append(c)
 
     def detect(self, timeseries):
-        res = []
+        res = {}
+        for feature in self._column_by_name:
+            res[feature] = []
+
 
         for cor in self._correlated_features:
             f1_values = timeseries[cor.feature1]
@@ -79,7 +82,8 @@ class HybridAnomalyDetector:
 
             for i in range(len(f1_values)):
                 if self._is_anomalous(f1_values[i], f2_values[i], cor):
-                    res.append((i, cor.feature1, cor.feature2))
+                    res[cor.feature1].append(i)
+                    res[cor.feature2].append(i)
         return res
 
     def _find_threshold(self, points, line):

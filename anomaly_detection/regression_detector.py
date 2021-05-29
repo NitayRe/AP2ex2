@@ -27,7 +27,7 @@ class RegressionAnomalyDetector:
         self._correlated_features = []
 
         # initiate threshold
-        self._threshold = THRESHOLD;
+        self._threshold = THRESHOLD
 
         # find the correlated feature of each feature
         for feature1 in self._column_by_name:
