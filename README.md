@@ -10,7 +10,7 @@ Our web-app design is:
 ![web-app-view](readme-resources/web-app.png?raw=TRUE "web-app")
 
 
-### The function of the RESTful api are:
+### The functions of the RESTful api are:
 - adding a new anomaly detector - train it by given data, which uses either regression algorithm, or a hybrid algorithm.
 - get the info of a specific anomaly detector.
 - get the info of all saved anomaly detectors.
