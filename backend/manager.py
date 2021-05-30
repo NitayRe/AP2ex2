@@ -4,6 +4,7 @@ from anomaly_detection.hybrid_detector import HybridAnomalyDetector
 from . import db_manager
 import datetime
 import random
+import threading
 
 # maps algorithm name to its detector class
 ALGORITHMS = {"regression": RegressionAnomalyDetector, "hybrid": HybridAnomalyDetector}
@@ -39,6 +40,22 @@ class ModelsManager:
                 self._id_set.add(try_id)
                 return try_id
 
+    def _train_model(self, model_id, detector):
+        """train an anomaly detector and add it to the data base
+
+        Args:
+            detector: anomaly detector to train
+            model_id (int): id of the model
+        """
+        detector.learn_normal()
+        self._detectors[model_id] = detector
+
+        # set the model status to ready
+        self._models[model_id]['status'] = 'ready'
+
+        # save model to database
+        self._db.add_model(model_id, (detector, self._models[model_id]))
+
     def add_model(self, algorithm, data):
         """train a model and add it to the list of existing models
 
@@ -53,17 +70,17 @@ class ModelsManager:
         if algorithm not in ALGORITHMS:
             raise Exception('algoritm does not exist')
 
-        detector = ALGORITHMS[algorithm](data)
-        detector.learn_normal()
-
         model_id = self._choose_id()
-        self._detectors[model_id] = detector
-        model = dict(model_id=model_id, upload_time=self._current_time(), status='ready')
+        model = dict(model_id=model_id, upload_time=self._current_time(), status='pending')
         self._models[model_id] = model
 
-        # save model to database
-        self._db.add_model(model_id, (detector, model))
+        detector = ALGORITHMS[algorithm](data)
         
+        # training should happen in a different thread
+        train_thread = threading.Thread(target=self._train_model, args=(model_id,detector,))
+        train_thread.setDaemon(True)
+        train_thread.start()
+
         return self._models[model_id]
 
     def get_model(self, id):
