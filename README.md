@@ -22,7 +22,6 @@ Our web-app design is:
 ### The Web-Application:
 It can create a new anomaly detector, and train it by a given file from the user.
 It can also detect anomalies, using an existing detector, in a file the user uploads, and present the anomalies visually on a graph and a table.
-.
 
 ## The Project Structure:
 There are 3 main parts of the project:
@@ -30,7 +29,8 @@ There are 3 main parts of the project:
 it includes the `manager.py` and the `db_manager.py`.
 we used ZODB (database for python objects) in order to make detectors not limited for the current run of the server.
 #### the view:
-...
+it includes the `index.html` for the content of the web page, the `js` files for functionality and the `css` files for the design of the web page.
+the `index.html` includes the `js` files and the `css` files in order to use there methods and design.
 ### the controller:
 that is the `app.py` file - it connects the HTTP requests to the model in the backend.
 
