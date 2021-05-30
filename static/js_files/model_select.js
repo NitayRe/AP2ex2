@@ -67,13 +67,44 @@ class ModelSelect{
     }
 
     /**
+     * Deletes all the deleted models.
+     * @param existModels the models existing list.
+     * @private
+     */
+    __clearModelsIds(existModels){
+        let existingModelsIds = [];
+        let modelsIds = [];
+        let models = this.__modelSelect.querySelector('.custom-options').querySelectorAll("span");
+
+        models.forEach(model => modelsIds.push(parseInt(model.getAttribute("data-value"))));
+
+        existModels.forEach(model => existingModelsIds.push(model.model_id));
+
+        modelsIds.forEach(function (modelId) {
+            if(!existingModelsIds.includes(modelId)) {
+                if(this.getSelectedModel() == modelId) {
+                    this.deleteSelectedModel();
+                    return;
+                }
+
+                //if not the selected model
+                let deletedModel = this.__modelSelect.querySelector('.custom-options').querySelector(`[data-value="${modelId}"]`);
+                deletedModel.parentNode.removeChild(deletedModel);
+            }
+        }.bind(this));
+    }
+
+    /**
      * update the models by the models list.
      * @param models
      */
     updateModels(models) {
+        this.__clearModelsIds(models);
+
         let penndingsIds = this.__getPendingModelsIds();
         // we add wech new model to the modelselect. it a model is pending we ceck if it change the status
         models.forEach(function (model){
+
             let option = this.__modelSelect.querySelector('.custom-options').querySelector(`[data-value="${model.model_id}"]`);
             // if the model wasn't in the modelselect before.
             if(option == null) {
