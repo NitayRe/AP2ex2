@@ -21,8 +21,8 @@ Our web-app design is:
 
 ### The Web-Application:
 It can create a new anomaly detector, and train it by a given file from the user.
-It can also detect anomalies, using an existing detector, in a file the user uploads.
-
+It can also detect anomalies, using an existing detector, in a file the user uploads, and present the anomalies visually on a graph and a table.
+.
 
 ## The Project Structure:
 There are 3 main parts of the project:
