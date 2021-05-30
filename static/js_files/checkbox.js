@@ -1,4 +1,6 @@
-//Varun Dewan 2019
+/**
+ * This var is used by the drop functuallity.
+ */
 var $ = {
    get: function(selector){ 
       var ele = document.querySelectorAll(selector);
@@ -18,7 +20,12 @@ var $ = {
    }
 };
 
-//Build the plugin
+/**
+ * Creates and stilish the select.
+ * This code is only for design the select.
+ * @param info the info includes the select element to build by the drop box.
+ * @returns The drob box with the Chosen slector to build by.
+ */
 var drop = function(info){var o = {
    options: info.options,
    selected: info.selected || [],
@@ -163,14 +170,29 @@ var drop = function(info){var o = {
    }
 }; o.init(); return o;}
 
+/**
+ * This is the class of the checkbox to choose var to display from.
+ */
 class Checkbox{
+   /**
+    * This is the constructor
+    * @param selector the select element.
+    * @param wrapper the wrapper of the select element.
+    */
    constructor(selector, wrapper) {
+      //initialize field
       this.__wrapper = wrapper;
       this.__selector= selector;
+
+      //creates the check box.
       this.__checkbox = new drop({
          selector:  '#'+ selector});
    }
 
+   /**
+    * Sets the variable options
+    * @param options var of names of options.
+    */
    setOptions(options) {
       document.querySelectorAll(".drop").forEach(element => element.remove());
 
@@ -186,6 +208,9 @@ class Checkbox{
         this.__checkbox = new drop({selector:  '#' + this.__selector});
    }
 
+   /**
+    * @returns all selected options
+    */
    getSelectedOptions(){
       let selectedOptions = [];
       let options = document.getElementById(this.__selector).options;
@@ -202,4 +227,5 @@ class Checkbox{
    }
 }
 
+//creates the anomaly checkbox
 let anomalyDrop = new Checkbox('varsNames', 'varsNames-wrapper');
