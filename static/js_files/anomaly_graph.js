@@ -170,4 +170,5 @@ class AnomalyGraph{
         this.__chart.resetZoom();
     }
 }
+// creat the anomaly graph
 let anomalyGraph = new AnomalyGraph("anomaly-chart");
