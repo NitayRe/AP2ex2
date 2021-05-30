@@ -31,6 +31,9 @@ we used ZODB (database for python objects) in order to make detectors not limite
 All the anomaly detectors implement the same interface even though it is not declared in the code.
 #### the controller:
 that is the `app.py` file - it connects the HTTP requests to the model in the backend.
+we used flask framework, in order the create the controller - each uri in the RESTful API is handled by a dedicated function, which uses the model to respond to the request.
+the uri of the static resources are handled automatically, and the main page (`/`) returns the `index.html` file.
+
 UML diagram of the backend (model + controller):
 ![web-app-view](readme-resources/backend.png?raw=TRUE "web-app")
 
