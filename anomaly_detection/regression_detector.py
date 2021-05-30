@@ -63,6 +63,15 @@ class RegressionAnomalyDetector:
             self._correlated_features.append(c)
 
     def detect(self, timeseries):
+        """detect anomalies in timeseries
+
+        Args:
+            timeseries (dictionary: string -> list of floats): a timeseries to detect from, maps a feature name to its column values
+
+        Returns:
+            dictionary, represents ANOMALY JSON in the format
+            of: { col_name_1: [1,3...], col_name_2: [1,5...] ....}
+        """
         res = {}
         for feature in self._column_by_name:
             res[feature] = []
@@ -78,6 +87,13 @@ class RegressionAnomalyDetector:
                     res[cor.feature2].append(i)
         return res
 
+    def get_model(self):
+        res = ''
+        for cf in self._correlated_features:
+            res += f'{cf.feature1}-{cf.feature2}\n'
+
+        return res
+
     def _find_threshold(self, points, line):
         max = 0
         for p in points:
@@ -88,4 +104,14 @@ class RegressionAnomalyDetector:
         return max
 
     def _is_anomalous(self, x, y, cf):
+        """check if point is anomalous
+
+        Args:
+            x (int): value of the first feature
+            y (int): value of the second feature
+            cf (CorrelatedFeatures): information about the correlated features
+
+        Returns:
+            boolean: whether the point is anomalous
+        """
         return cf.corrlation > self._threshold and abs(y - cf.lin_reg.calc(x)) > cf.threshold

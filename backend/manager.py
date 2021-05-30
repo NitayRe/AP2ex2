@@ -97,7 +97,8 @@ class ModelsManager:
             data (dictionary, maps string to list of floats): timeseries data to detect anomalies in
 
         Returns:
-            report with all anomalies
+            None if model is not ready yet or report with all anomalies, in the format:
+            { anomalies:{ col_name_1: [span_1], col_name_2: [span_1,span_2, ... ] ....},reason: Any} }
         """
         if model_id not in self._models:
             raise Exception(f'model with the id {model_id} does not exist')
@@ -114,7 +115,7 @@ class ModelsManager:
         anomalies = det.detect(data)
         report = {}
 
-        # init all lists of the report
+        # transform list of indexes to list of spans
         for feature in data:
             report[feature] = []
             feature_anomalies = anomalies[feature]
@@ -136,7 +137,7 @@ class ModelsManager:
 
             report[feature].append([span_start, span_end])
             
-        return dict(anomalies=report, reason='no implemented')
+        return dict(anomalies=report, reason=det.get_model())
     
     def close(self):
         """ release resources
