@@ -4,7 +4,7 @@ In this project, we created two things:
 - a server, implementing a RESTful api, for creating and using anomaly detectors.
 - a single-page web application for detecting anomalies - which uses the RESTful api.
 
-[A demonstration of the project](link_to_youtube_video)
+[A demonstration of the project](https://youtu.be/mI9jX1b5J1I)
 
 Our web-app design is:
 ![web-app-view](readme-resources/web-app.png?raw=TRUE "web-app")
