@@ -36,7 +36,7 @@ UML diagram of the backend (model + controller):
 
 #### the view:
 it includes the `index.html` for the content of the web page, the `js` files for functionality and the `css` files for the design of the web page.
-the `index.html` includes the `js` files and the `css` files in order to use there methods and design.
+the `index.html` includes (refers to) the `js` files and the `css` files in order to use there methods and design.
 [for more info of the view look here](View.md)
 
 
