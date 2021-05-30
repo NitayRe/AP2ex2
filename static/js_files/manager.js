@@ -22,12 +22,9 @@ class Manager{
 
     async __updateModels() {
         while (true) {
-            await sleep(5000);
-            let modelsIds = this.__modelSelect.getPendingModelsIds();
+            this.__clientController.getAllModels();
 
-            modelsIds.forEach(function (modelId){
-                this.__clientController.getModelById(modelId);
-            });
+            await sleep(5000);
         }
     }
 
@@ -71,11 +68,11 @@ class Manager{
         }.bind(this));
 
         this.__clientController.addObserverFunc(function (event, response) {
-            if(event != EVENTS.GetModel) {
+            if(event != EVENTS.GetModels) {
                 return;
             }
 
-            this.__modelSelect.updateModel(response);
+            this.__modelSelect.updateModels(response);
         }.bind(this));
     }
 

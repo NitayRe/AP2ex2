@@ -45,26 +45,40 @@ class ModelSelect{
         this.__modelSelect.querySelector('.custom-options').appendChild(mSpan);
     }
 
-    getPendingModelsIds(){
+    __getPendingModelsIds(){
         let modelsIds = [];
         let pendings = this.__modelSelect.querySelector('.custom-options').querySelectorAll(`[data-status="pending"]`);
 
-        pendings.forEach(pending => modelsIds.push(pending.getAttribute("data-value")));
+        pendings.forEach(pending => modelsIds.push(parseInt(pending.getAttribute("data-value"))));
 
         return modelsIds;
     }
 
-    updateModel(model) {
-        let option = this.__modelSelect.querySelector('.custom-options').querySelector(`[data-value="${model.model_id}"]`);
-        option.setAttribute("data-status", model.status);
-        option.innerText = "Model Id: " + model.model_id +
-            "\nUpload Time: " + model.upload_time +
-            "\nStatus: " + model.status;
+    updateModels(models) {
+        let penndingsIds = this.__getPendingModelsIds();
+        models.forEach(function (model){
+            let option = this.__modelSelect.querySelector('.custom-options').querySelector(`[data-value="${model.model_id}"]`);
 
-        let status = this.__modelSelect.querySelector('.custom-select__trigger span').getAttribute("data-value");
-        if(status == model.model_id){
-            this.__modelSelect.querySelector('.custom-select__trigger span').setAttribute("data-status", model.status);
-        }
+            if(option == null) {
+                this.addNewModel(model);
+                return;
+            }
+
+            if(!penndingsIds.includes(model.model_id)){
+                return;
+            }
+
+            //if we are here the model is already in the select and is pending
+            option.setAttribute("data-status", model.status);
+            option.innerText = "Model Id: " + model.model_id +
+                "\nUpload Time: " + model.upload_time +
+                "\nStatus: " + model.status;
+
+            let status = this.__modelSelect.querySelector('.custom-select__trigger span').getAttribute("data-value");
+            if(status == model.model_id){
+                this.__modelSelect.querySelector('.custom-select__trigger span').setAttribute("data-status", model.status);
+            }
+        }.bind(this));
     }
 
     deleteSelectedModel(){

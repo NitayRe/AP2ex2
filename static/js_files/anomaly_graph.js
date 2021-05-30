@@ -10,6 +10,20 @@ class AnomalyGraph{
             datasets: []
           },
           options: {
+                scales: {
+                    xAxes: [ {
+                      scaleLabel: {
+                        display: true,
+                        labelString: 'Index'
+                      }
+                    } ],
+                    yAxes: [ {
+                      scaleLabel: {
+                        display: true,
+                        labelString: 'Value'
+                      }
+                    }]
+                  },
                 elements: {
                   point: {
                     backgroundColor : this.__customColor.bind(this),
