@@ -39,7 +39,7 @@ note: this method (like the others) is non-secure - anyone can access the list o
 
 ## Relevent Data Structures
 
-#### Model Structure
+### Model Structure
 data structure: `{model_id: <int>, upload_time: <time>, status: "ready" | "pending"}` - "pending" means the model has not done practicing over the valid data, so it can not be used yet to detect anomalies. "ready" means it's done, and can be used to detect anomalies on others sets of data.
 
 ### Data Structure

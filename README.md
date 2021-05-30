@@ -26,13 +26,18 @@ It can also detect anomalies, using an existing detector, in a file the user upl
 ## The Project Structure:
 There are 3 main parts of the project:
 #### the model:
-it includes the `manager.py` and the `db_manager.py`.
-we used ZODB (database for python objects) in order to make detectors not limited for the current run of the server.
+it includes the `manager.py` which acts as a facade for all the model part, and the `db_manager.py` which responsoble for managing the database.
+we used ZODB (database for python objects) in order to make detectors not limited for the current run of the server. we save pairs that maps the model_id (int) to a tuple contains the [Model data structure](RESTful-api.md#model-structure) and the Anomaly detector object.
+All the anomaly detectors implement the same interface even though it is not declared in the code.
+#### the controller:
+that is the `app.py` file - it connects the HTTP requests to the model in the backend.
+UML diagram of the backend (model + controller):
+![web-app-view](readme-resources/backend.png?raw=TRUE "web-app")
+
 #### the view:
 it includes the `index.html` for the content of the web page, the `js` files for functionality and the `css` files for the design of the web page.
 the `index.html` includes the `js` files and the `css` files in order to use there methods and design.
-#### the controller:
-that is the `app.py` file - it connects the HTTP requests to the model in the backend.
+
 
 
 

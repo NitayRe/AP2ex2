@@ -50,11 +50,12 @@ class ModelsManager:
         detector.learn_normal()
         self._detectors[model_id] = detector
 
-        # set the model status to ready
-        self._models[model_id]['status'] = 'ready'
+        if model_id in self._models:
+            # set the model status to ready
+            self._models[model_id]['status'] = 'ready'
 
-        # save model to database
-        self._db.add_model(model_id, (detector, self._models[model_id]))
+            # save model to database
+            self._db.add_model(model_id, (detector, self._models[model_id]))
 
     def add_model(self, algorithm, data):
         """train a model and add it to the list of existing models
@@ -101,9 +102,10 @@ class ModelsManager:
         if id not in self._models:
             raise Exception(f'model with the id {id} does not exist')
 
-        self._models.pop(id, None)
+        model = self._models.pop(id, None)
         self._detectors.pop(id, None)
-        self._db.delete_model(id)
+        if model is not None and model['status'] == 'ready':
+            self._db.delete_model(id)
 
 
     def detect_anomalies(self, model_id, data):
