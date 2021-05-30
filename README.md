@@ -31,7 +31,7 @@ we used ZODB (database for python objects) in order to make detectors not limite
 #### the view:
 it includes the `index.html` for the content of the web page, the `js` files for functionality and the `css` files for the design of the web page.
 the `index.html` includes the `js` files and the `css` files in order to use there methods and design.
-### the controller:
+#### the controller:
 that is the `app.py` file - it connects the HTTP requests to the model in the backend.
 
 
