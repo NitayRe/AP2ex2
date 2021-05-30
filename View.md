@@ -17,3 +17,7 @@ you can also drag and zoom in order to examine spacific parts of the graphs.
 to analize the result file by. The model select refreshes every 5 seconds and updates the models list, This fuctioality is implemented by the `manager`.
 
 **ClientController:** the client controller is in charge of the commionication with the server. The communication is done by `AJAX`.
+
+**AnomalyTable:** the anomaly table presents all the anomalies that was found in the file.
+
+**DragArea:** the drag area in in charge of uploding files to the web-app. The uplode is done by the drop box od the file system.
