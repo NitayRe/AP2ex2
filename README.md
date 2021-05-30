@@ -64,4 +64,4 @@ or:
 ```sh 
 python3 app.py
 ```
-(depending on the way python 3 is run)
+(depending on the way you run python 3)
